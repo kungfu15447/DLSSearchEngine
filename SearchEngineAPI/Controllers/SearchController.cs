@@ -10,16 +10,20 @@ namespace SearchEngineAPI.Controllers
     public class SearchController : ControllerBase
     {
         private ISearchService _searchService;
+        private ITermService _termService;
 
-        public SearchController(ISearchService searchService)
+        public SearchController(ISearchService searchService, ITermService termService)
         {
             _searchService = searchService;
+            _termService = termService;
         }
 
-        [HttpGet("term")]
-        public IEnumerable<Document> GetDocumentsByTerm(string term)
+        [HttpGet("value")]
+        public IEnumerable<Document> GetDocumentsByTerm(string value)
         {
-            return _searchService.GetDocumentsByTerm(new Term());
+            Term term = _termService.GetTermByValue(value);
+
+            return _searchService.GetDocumentsByTerm(term);
         }
     }
 }
