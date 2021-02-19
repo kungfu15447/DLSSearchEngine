@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SearchEngineAPI.Services;
 
 namespace SearchEngineAPI
 {
@@ -26,8 +27,10 @@ namespace SearchEngineAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            services.AddScoped<ITermService, TermService>();
+            services.AddScoped<ISearchService, SearchService>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchEngineAPI", Version = "v1" });
