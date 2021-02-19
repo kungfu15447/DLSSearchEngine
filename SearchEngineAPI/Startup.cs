@@ -29,7 +29,14 @@ namespace SearchEngineAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SearchContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:SearchDB"]));
+            bool useInMemory = Configuration.GetValue<bool>("ConfigValues:UseInMemory");
+            if (useInMemory) 
+            {
+                services.AddDbContext<SearchContext>(options => options.UseSqlite("Data Source=search.db"));
+            } else
+            {
+                services.AddDbContext<SearchContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:SearchDB"]));
+            }
             services.AddControllers();
             services.AddScoped<ITermService, TermService>();
             services.AddScoped<ISearchService, SearchService>();

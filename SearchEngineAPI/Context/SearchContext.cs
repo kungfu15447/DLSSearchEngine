@@ -11,7 +11,7 @@ namespace SearchEngineAPI.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
         }
 
         public DbSet<Document> Documents { get; set; }

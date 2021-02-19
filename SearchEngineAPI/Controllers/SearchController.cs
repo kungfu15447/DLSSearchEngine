@@ -18,7 +18,7 @@ namespace SearchEngineAPI.Controllers
             _termService = termService;
         }
 
-        [HttpGet("value")]
+        [HttpGet("{value}")]
         public IEnumerable<Document> GetDocumentsByTerm(string value)
         {
             Term term = _termService.GetTermByValue(value);
