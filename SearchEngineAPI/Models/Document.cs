@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SearchEngineAPI.Models
 {
@@ -8,5 +9,6 @@ namespace SearchEngineAPI.Models
         public string Title { get; set; }
         public string Link { get; set; }
         public DateTime Date { get; set; }
+        public List<Occurence> TermOccurences { get; set; }
     }
 }

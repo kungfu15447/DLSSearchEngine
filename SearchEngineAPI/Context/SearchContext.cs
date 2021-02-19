@@ -14,8 +14,8 @@ namespace SearchEngineAPI.Context
 
         }
 
-        DbSet<Document> Documents { get; set; }
-        DbSet<Term> Terms { get; set; }
-        DbSet<Occurence> Occurences { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Term> Terms { get; set; }
+        public DbSet<Occurence> Occurences { get; set; }
     }
 }
