@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,6 @@ namespace SearchEngineAPI
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -32,7 +32,9 @@ namespace SearchEngineAPI
             bool useInMemory = Configuration.GetValue<bool>("ConfigValues:UseInMemory");
             if (useInMemory) 
             {
-                services.AddDbContext<SearchContext>(options => options.UseSqlite("Data Source=search.db"));
+                var sqlite = new SqliteConnection("Data Source = Search.db");
+                sqlite.Open();
+                services.AddDbContext<SearchContext>(options => options.UseSqlite(sqlite));
             } else
             {
                 services.AddDbContext<SearchContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:SearchDB"]));
@@ -52,6 +54,12 @@ namespace SearchEngineAPI
         {
             if (env.IsDevelopment())
             {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetRequiredService<SearchContext>();
+                    context.Database.EnsureCreated();
+                }
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SearchEngineAPI v1"));

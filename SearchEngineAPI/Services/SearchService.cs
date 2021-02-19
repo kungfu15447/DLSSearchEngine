@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SearchEngineAPI.Context;
@@ -14,6 +15,10 @@ namespace SearchEngineAPI.Services
         }
         public List<Document> GetDocumentsByTerm(Term term)
         {
+            if (term == null)
+            {
+                return new List<Document>();
+            }
             var docOccurences = _ctx.Occurences.Where(oc => oc.TermId == term.TermId);
             var documents = _ctx.Documents.Where(doc => docOccurences.Any(oc => oc.DocumentId == doc.DocumentId));
 
