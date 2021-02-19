@@ -5,6 +5,10 @@ namespace SearchEngineAPI.Context
 {
     public class SearchContext : DbContext
     {
+        public SearchContext(DbContextOptions options)
+            : base(options)
+        {
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
