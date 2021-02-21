@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Indexer.Models;
 
 namespace Indexer
 {
@@ -8,7 +9,15 @@ namespace Indexer
     {
         static void Main(string[] args)
         {
-            var files = Crawl(new DirectoryInfo(""));
+            var files = Crawl(new DirectoryInfo("./Data"));
+            var documents = new List<Document>();
+            var terms = new List<Term>();
+            var occurences = new List<Occurence>();
+
+            foreach (var file in files)
+            {
+                Console.WriteLine($"Filename: {file.FullName}");
+            }
         }
 
         private static IEnumerable<FileInfo> Crawl(DirectoryInfo dir)
