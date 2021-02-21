@@ -8,16 +8,22 @@ namespace Indexer
 {
     class Program
     {
+        private static string DATA_FOLDER_NAME = "Data";
+        private static string DATA_FOLDER_PATH = $"./{DATA_FOLDER_NAME}";
         static void Main(string[] args)
         {
-            var files = Crawl(new DirectoryInfo("./Data"));
+            var files = Crawl(new DirectoryInfo(DATA_FOLDER_PATH));
             var documents = new List<Document>();
             var terms = new List<Term>();
             var occurences = new List<Occurence>();
 
             foreach (var file in files)
             {
-                var document = new Document() { Title = file.Name, Link = file.FullName, Date = DateTime.Now };
+                var folderIndex = file.FullName.IndexOf(DATA_FOLDER_NAME);
+                var fileName = file.FullName.Substring(folderIndex, file.FullName.Length - 1 - folderIndex);
+                fileName = fileName.Replace('\\', '.');
+                
+                var document = new Document() { Title = fileName, Link = file.FullName, Date = DateTime.Now };
                 documents.Add(document);
                 var wordsInDoc = new List<string>();
 
@@ -48,7 +54,7 @@ namespace Indexer
                                     var occurence = new Occurence(){ Document = document, Term = term};
                                     occurences.Add(occurence);
                                     wordsInDoc.Add(word);
-                                    Console.WriteLine($"Occurence: {document.Title}, {term.Value}");
+                                    //Console.WriteLine($"Occurence: {document.Title}, {term.Value}");
                                 }
                             }
                             lastIndex = currentIndex+1;
