@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Indexer.Models;
+using Microsoft.Data.Sqlite;
 
 namespace Indexer.Context
 {
@@ -8,9 +9,13 @@ namespace Indexer.Context
         public SearchContext(DbContextOptions options)
             : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
             var sqlite = new SqliteConnection("Data Source = Search.db");
             sqlite.Open();
-            options.UseSqlite(sqlite);
+            builder.UseSqlite(sqlite);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
