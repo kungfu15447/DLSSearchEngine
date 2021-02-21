@@ -22,7 +22,7 @@ namespace Indexer
                 var folderIndex = file.FullName.IndexOf(DATA_FOLDER_NAME);
                 var fileName = file.FullName.Substring(folderIndex, file.FullName.Length - 1 - folderIndex);
                 fileName = fileName.Replace('\\', '.');
-                
+
                 var document = new Document() { Title = fileName, Link = file.FullName, Date = DateTime.Now };
                 documents.Add(document);
                 var wordsInDoc = new List<string>();
@@ -63,12 +63,18 @@ namespace Indexer
                 }
             }
 
+            Console.WriteLine("Done running through all files and directories!");
+
             var ctx = new SearchContext();
             ctx.Database.EnsureCreated();
             ctx.Documents.AddRange(documents);
+            Console.WriteLine("Added all documents");
             ctx.Terms.AddRange(terms);
+            Console.WriteLine("Added all terms");
             ctx.Occurences.AddRange(occurences);
+            Console.WriteLine("Added all occurences of terms in  documents");
             ctx.SaveChanges();
+            Console.WriteLine("Everything is saved in database");
         }
 
         private static IEnumerable<FileInfo> Crawl(DirectoryInfo dir)
