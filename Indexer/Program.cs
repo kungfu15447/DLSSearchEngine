@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Indexer.Context;
 using Indexer.Models;
 
 namespace Indexer
@@ -16,8 +17,52 @@ namespace Indexer
 
             foreach (var file in files)
             {
-                Console.WriteLine($"Filename: {file.FullName}");
+                var document = new Document() { Title = file.Name, Link = file.FullName, Date = DateTime.Now };
+                documents.Add(document);
+                var wordsInDoc = new List<string>();
+
+                using (var streamer = new StreamReader(file.FullName))
+                {
+                    var text = streamer.ReadToEnd();
+                    
+                    var lastIndex = 0;
+                    var currentIndex = 0;
+
+                    while (currentIndex < text.Length - 1)
+                    {
+                        currentIndex++;
+                        if (!char.IsLetterOrDigit(text[currentIndex]) && currentIndex != 0) 
+                        {
+                            var length = currentIndex - lastIndex;
+                            if (length != 0) {
+                                var word = text.Substring(lastIndex, length);
+                                var term = CheckAndReturnTerm(word, terms);
+
+                                if (term == null) 
+                                {
+                                    term = new Term(){ Value = word };
+                                    terms.Add(term);
+                                }
+
+                                if (!wordsInDoc.Contains(word)) {
+                                    var occurence = new Occurence(){ Document = document, Term = term};
+                                    occurences.Add(occurence);
+                                    wordsInDoc.Add(word);
+                                    Console.WriteLine($"Occurence: {document.Title}, {term.Value}");
+                                }
+                            }
+                            lastIndex = currentIndex+1;
+                        }
+                    }
+                }
             }
+
+            var ctx = new SearchContext();
+
+            ctx.Documents.AddRange(documents);
+            ctx.Terms.AddRange(terms);
+            ctx.Occurences.AddRange(occurences);
+            ctx.SaveChanges();
         }
 
         private static IEnumerable<FileInfo> Crawl(DirectoryInfo dir)
@@ -34,6 +79,13 @@ namespace Indexer
                     yield return subFile;
                 }
             }
+        }
+
+        private static Term CheckAndReturnTerm(string value, List<Term> terms)
+        {
+            var term = terms.Find(t => t.Value == value);
+
+            return term;
         }
     }
 }

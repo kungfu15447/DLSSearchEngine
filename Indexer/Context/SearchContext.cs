@@ -11,9 +11,13 @@ namespace Indexer.Context
         {
         }
 
+        public SearchContext()
+        {            
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            var sqlite = new SqliteConnection("Data Source = Search.db");
+            var sqlite = new SqliteConnection("Data Source = ../SearchEngineAPI/Search.db");
             sqlite.Open();
             builder.UseSqlite(sqlite);
         }
