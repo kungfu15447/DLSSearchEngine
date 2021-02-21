@@ -8,10 +8,10 @@ namespace Indexer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var files = Crawl(new DirectoryInfo(""));
         }
 
-        private IEnumerable<FileInfo> Crawl(DirectoryInfo dir)
+        private static IEnumerable<FileInfo> Crawl(DirectoryInfo dir)
         {
             foreach (FileInfo file in dir.EnumerateFiles()) 
             {
