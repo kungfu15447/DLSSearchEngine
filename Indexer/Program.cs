@@ -35,7 +35,7 @@ namespace Indexer
                         {
                             var length = currentIndex - lastIndex;
                             if (length != 0) {
-                                var word = text.Substring(lastIndex, length);
+                                var word = text.Substring(lastIndex, length).ToLower();
                                 var term = CheckAndReturnTerm(word, terms);
 
                                 if (term == null) 
@@ -58,7 +58,7 @@ namespace Indexer
             }
 
             var ctx = new SearchContext();
-
+            ctx.Database.EnsureCreated();
             ctx.Documents.AddRange(documents);
             ctx.Terms.AddRange(terms);
             ctx.Occurences.AddRange(occurences);
