@@ -19,7 +19,7 @@ namespace Indexer
 
             foreach (var file in files)
             {
-                var folderIndex = file.FullName.IndexOf(DATA_FOLDER_NAME);
+                var folderIndex = file.FullName.IndexOf(DATA_FOLDER_NAME) + DATA_FOLDER_NAME.Length + 1;
                 var fileName = file.FullName.Substring(folderIndex, file.FullName.Length - 1 - folderIndex);
                 fileName = fileName.Replace('\\', '.');
 
@@ -61,6 +61,8 @@ namespace Indexer
                         }
                     }
                 }
+
+                Console.WriteLine($"Finished looking through: {file.FullName}");
             }
 
             Console.WriteLine("Done running through all files and directories!");
