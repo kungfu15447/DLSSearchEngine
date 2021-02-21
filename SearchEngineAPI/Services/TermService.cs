@@ -14,7 +14,7 @@ namespace SearchEngineAPI.Services
 
         public Term GetTermByValue(string value)
         {
-            return _ctx.Terms.FirstOrDefault(t => t.Value == value);
+            return _ctx.Terms.FirstOrDefault(t => t.Value == value.ToLower());
         }
     }
 }

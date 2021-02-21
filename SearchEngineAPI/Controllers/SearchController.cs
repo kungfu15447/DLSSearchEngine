@@ -19,11 +19,18 @@ namespace SearchEngineAPI.Controllers
         }
 
         [HttpGet("{value}")]
-        public IEnumerable<Document> GetDocumentsByTerm(string value)
+        public IActionResult GetDocumentsByTerm(string value)
         {
             Term term = _termService.GetTermByValue(value);
 
-            return _searchService.GetDocumentsByTerm(term);
+            if (term == null)
+            {
+                return new NotFoundResult();
+            }
+
+            var list = _searchService.GetDocumentsByTerm(term);
+
+            return new OkObjectResult(list);
         }
     }
 }
