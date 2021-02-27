@@ -20,7 +20,7 @@ namespace Indexer
             foreach (var file in files)
             {
                 var folderIndex = file.FullName.IndexOf(DATA_FOLDER_NAME) + DATA_FOLDER_NAME.Length + 1;
-                var fileName = file.FullName.Substring(folderIndex, file.FullName.Length - 1 - folderIndex);
+                var fileName = file.FullName.Substring(folderIndex, file.FullName.Length - folderIndex);
                 fileName = fileName.Replace('\\', '.');
 
                 var document = new Document() { Title = fileName, Link = file.FullName, Date = DateTime.Now };

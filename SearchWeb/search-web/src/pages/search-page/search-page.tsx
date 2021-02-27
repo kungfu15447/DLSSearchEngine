@@ -14,7 +14,7 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="search-page">
       <h1 className="search-page__title">Zero</h1>
       <input
         className="search-page__input"
