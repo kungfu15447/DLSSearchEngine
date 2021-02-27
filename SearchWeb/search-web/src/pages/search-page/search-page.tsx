@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
-import { APIDocument } from '../../data/models/document';
-import { GetDocumentsByTerm } from '../../data/services/DocumentService';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import './search-page.css';
 
 const SearchPage: React.FC = () => {
-  const [documents, setDocuments] = useState<APIDocument[]>([]);
   const [term, setTerm] = useState('');
+  const history = useHistory();
 
   const searchDocuments = () => {
     if (term.length !== 0) {
-      GetDocumentsByTerm(term)
-        .then((documents) => {
-          setDocuments(documents);
-        })
-        .catch(() => {
-          setDocuments([]);
-        });
+      history.push(`search/${term}`);
     }
   };
 
@@ -40,9 +33,6 @@ const SearchPage: React.FC = () => {
       >
         Search
       </button>
-      {documents.map((value, index) => {
-        return <div key={index}>{value.title}</div>;
-      })}
     </div>
   );
 };

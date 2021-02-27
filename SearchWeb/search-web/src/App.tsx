@@ -10,7 +10,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact={true} component={SearchPage} />
-          <Route path="/search" component={SearchedDocumentPage} />
+          <Route path="/search/:term" component={SearchedDocumentPage} />
         </Switch>
       </Router>
     </div>
