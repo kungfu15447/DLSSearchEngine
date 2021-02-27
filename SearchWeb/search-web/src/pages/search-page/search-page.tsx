@@ -8,20 +8,38 @@ const SearchPage: React.FC = () => {
   const [term, setTerm] = useState('');
 
   const searchDocuments = () => {
-    GetDocumentsByTerm(term).then((documents) => {
-      setDocuments(documents);
-    });
+    if (term.length !== 0) {
+      GetDocumentsByTerm(term)
+        .then((documents) => {
+          setDocuments(documents);
+        })
+        .catch(() => {
+          setDocuments([]);
+        });
+    }
   };
 
   return (
     <div className="search-page">
-      <h1 className="search-page__title">Zero</h1>
-      <input
-        className="search-page__input"
-        type="text"
-        onChange={(event) => setTerm(event.target.value)}
-      />
-      <button onClick={() => searchDocuments()}>Search</button>
+      <div className="search-page__title">
+        <span style={{ color: '#4285F4' }}>Z</span>
+        <span style={{ color: '#F4B400' }}>E</span>
+        <span style={{ color: '#0F9D58' }}>R</span>
+        <span style={{ color: '#DB4437' }}>O</span>
+      </div>
+      <div className="search-page__input-container">
+        <input
+          className="search-page__input"
+          type="text"
+          onChange={(event) => setTerm(event.target.value)}
+        />
+      </div>
+      <button
+        className="search-page__search-button"
+        onClick={() => searchDocuments()}
+      >
+        Search
+      </button>
       {documents.map((value, index) => {
         return <div key={index}>{value.title}</div>;
       })}
