@@ -1,5 +1,5 @@
 const SearchedDocumentPage: React.FC = () => {
-  return <></>;
+  return <>Hello World</>;
 };
 
 export default SearchedDocumentPage;
