@@ -1,4 +1,4 @@
-export interface Document {
+export interface APIDocument {
   documentId: number;
   title: string;
   link: string;

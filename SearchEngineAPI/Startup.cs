@@ -47,6 +47,10 @@ namespace SearchEngineAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchEngineAPI", Version = "v1" });
             });
+
+            services.AddCors(options => options.AddDefaultPolicy(builder => {
+                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +72,8 @@ namespace SearchEngineAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
