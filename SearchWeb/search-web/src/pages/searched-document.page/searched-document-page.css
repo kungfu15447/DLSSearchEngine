@@ -1,4 +1,20 @@
 .searched-document-page__header {
-  height: 100px;
+  padding-left: 20px;
+  padding-top: 30px;
+  height: 70px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.searched-document-page__header-title {
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.searched-document-page__header-title > span {
+  font-size: 25px;
+  font-weight: 550;
+}
+
+.searched-document-page__body-row {
   border-bottom: 1px solid #cccccc;
 }

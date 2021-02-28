@@ -33,9 +33,16 @@ const SearchedDocumentPage: React.FC = () => {
   useEffect(() => {
     getDocuments(term);
   }, []);
+
   return (
     <div>
       <div className="searched-document-page__header">
+        <div className="searched-document-page__header-title">
+          <span style={{ color: '#4285F4' }}>Z</span>
+          <span style={{ color: '#F4B400' }}>E</span>
+          <span style={{ color: '#0F9D58' }}>R</span>
+          <span style={{ color: '#DB4437' }}>O</span>
+        </div>
         <input
           type="text"
           value={searchedInput}
@@ -46,9 +53,8 @@ const SearchedDocumentPage: React.FC = () => {
         {document.map((value, index) => {
           return (
             <div className="searched-document-page__body-row" key={index}>
+              <h6>{value.link}</h6>
               <h4>{value.title}</h4>
-              <h4>{value.link}</h4>
-              <h4>{value.date}</h4>
             </div>
           );
         })}
