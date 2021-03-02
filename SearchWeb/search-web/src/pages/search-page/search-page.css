@@ -15,23 +15,3 @@
 .search-page__input-container {
   width: 100%;
 }
-
-.search-page__search-button {
-  background-color: #f8f9fa;
-  border: 1px solid #f8f9fa;
-  height: 36px;
-  width: 115px;
-  font-size: 15px;
-  margin-top: 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.search-page__search-button:hover {
-  border: 1px solid #cccccc;
-  border-bottom: 2px solid #cccccc;
-}
-
-.search-page__search-button:focus {
-  outline: none;
-}

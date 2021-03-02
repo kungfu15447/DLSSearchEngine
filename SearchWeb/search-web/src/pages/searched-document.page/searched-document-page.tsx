@@ -17,7 +17,6 @@ const SearchedDocumentPage: React.FC = () => {
     } else {
       searchTerm = searchedInput;
     }
-
     GetDocumentsByTerm(searchTerm)
       .then((list) => {
         setDocument(list);
@@ -44,7 +43,11 @@ const SearchedDocumentPage: React.FC = () => {
           <span style={{ color: '#0F9D58' }}>r</span>
           <span style={{ color: '#DB4437' }}>o</span>
         </div>
-        <SearchInput term={searchedInput} setTerm={setSearchedInput} />
+        <SearchInput
+          term={searchedInput}
+          setTerm={setSearchedInput}
+          searchDocuments={getDocuments}
+        />
       </div>
       <div className="searched-document-page__body">
         {document.map((value, index) => {

@@ -7,9 +7,16 @@ const SearchPage: React.FC = () => {
   const [term, setTerm] = useState('');
   const history = useHistory();
 
-  const searchDocuments = () => {
-    if (term.length !== 0) {
-      history.push(`search/${term}`);
+  const searchDocuments = (pTerm?: string) => {
+    console.log(pTerm);
+    let mTerm = '';
+    if (pTerm) {
+      mTerm = pTerm;
+    } else {
+      mTerm = term;
+    }
+    if (mTerm.length !== 0) {
+      history.replace(`search/${mTerm}`);
     }
   };
 
@@ -22,14 +29,13 @@ const SearchPage: React.FC = () => {
         <span style={{ color: '#DB4437' }}>o</span>
       </div>
       <div className="search-page__input-container">
-        <SearchInput setTerm={setTerm} term={term} />
+        <SearchInput
+          setTerm={setTerm}
+          term={term}
+          showButtons={true}
+          searchDocuments={searchDocuments}
+        />
       </div>
-      <button
-        className="search-page__search-button"
-        onClick={() => searchDocuments()}
-      >
-        Search
-      </button>
     </div>
   );
 };
