@@ -17,20 +17,25 @@ namespace SearchHistoryAPI.Services
             _ctx = ctx;
         }
 
-        public async Task AddOrUpdateStatementAsync(SearchStatement st)
+        public async Task<SearchStatement> AddOrUpdateStatementAsync(string statement)
         {
-            var exists = _ctx.SearchStatements.Any(s => s.Id == st.Id);
+            var searchStatement = await _ctx.SearchStatements.FirstOrDefaultAsync(s => s.Statement == statement);
 
-            if (exists) 
+            if (searchStatement != null) 
             {
-                st.SearchedOn = DateTime.Now;
-                _ctx.SearchStatements.Update(st);
+                searchStatement.SearchedOn = DateTime.Now;
             } else 
             {
-                _ctx.SearchStatements.Add(st);
+                searchStatement = new SearchStatement
+                {
+                    Statement = statement,
+                    SearchedOn = DateTime.Now
+                };
+                await _ctx.SearchStatements.AddAsync(searchStatement);
             }
 
             await _ctx.SaveChangesAsync();
+            return searchStatement;
         }
 
         public async Task DeleteStatementAsync(SearchStatement st)

@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SearchHistoryAPI.Models;
 using SearchHistoryAPI.Services;
+using SearchHistoryAPI.WebAPI.Models;
 
 namespace SearchHistoryAPI.WebAPI.Controllers
 {
@@ -23,9 +25,9 @@ namespace SearchHistoryAPI.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] SearchStatement st)
+        public async Task<IActionResult> Add([FromBody] AddStatementModel asm)
         {
-            await _historyService.AddOrUpdateStatementAsync(st);
+            var st = await _historyService.AddOrUpdateStatementAsync(asm.Statement.ToLower());
             return Ok(st);
         }
 

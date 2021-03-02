@@ -10,7 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using SearchHistoryAPI.Context;
 using SearchHistoryAPI.Services;
 
 namespace SearchHistoryAPI.WebAPI
@@ -27,12 +30,26 @@ namespace SearchHistoryAPI.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            bool useInMemory = Configuration.GetValue<bool>("ConfigValues:UseInMemory");
+            if (useInMemory)
+            {
+                var sqlite = new SqliteConnection("Data Source = History.db");
+                sqlite.Open();
+                services.AddDbContext<HistoryContext>(options => options.UseSqlite(sqlite));
+            } else 
+            {
+                services.AddDbContext<HistoryContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:HistoryDB"]));
+            }
             services.AddScoped<IHistoryService, HistoryService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchHistoryAPI", Version = "v1" });
             });
+
+            services.AddCors(options => options.AddDefaultPolicy(builder => {
+                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +57,13 @@ namespace SearchHistoryAPI.WebAPI
         {
             if (env.IsDevelopment())
             {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetRequiredService<HistoryContext>();
+                    context.Database.EnsureCreated();
+                }
+
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SearchHistoryAPI v1"));
@@ -48,6 +72,8 @@ namespace SearchHistoryAPI.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

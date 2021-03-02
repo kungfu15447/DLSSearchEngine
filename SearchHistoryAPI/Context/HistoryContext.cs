@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using SearchHistoryAPI.Models;
 
@@ -14,8 +15,11 @@ namespace SearchHistoryAPI.Context
         {
             builder.Entity<SearchStatement>()
                 .HasKey(st => st.Id);
+
+            builder.Entity<SearchStatement>()
+                .Property(st => st.SearchedOn);
         }
 
-        public DbSet<SearchStatement> SearchStatements;
+        public DbSet<SearchStatement> SearchStatements { get; set; }
     }
 }
