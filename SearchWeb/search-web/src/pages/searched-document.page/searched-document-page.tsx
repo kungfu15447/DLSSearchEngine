@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { APIDocument } from '../../data/models/document';
 import { GetDocumentsByTerm } from '../../data/services/DocumentService';
+import SearchInput from '../../shared/search-input/search-input';
 import './searched-document-page.css';
 
 const SearchedDocumentPage: React.FC = () => {
@@ -39,15 +40,11 @@ const SearchedDocumentPage: React.FC = () => {
       <div className="searched-document-page__header">
         <div className="searched-document-page__header-title">
           <span style={{ color: '#4285F4' }}>Z</span>
-          <span style={{ color: '#F4B400' }}>E</span>
-          <span style={{ color: '#0F9D58' }}>R</span>
-          <span style={{ color: '#DB4437' }}>O</span>
+          <span style={{ color: '#F4B400' }}>e</span>
+          <span style={{ color: '#0F9D58' }}>r</span>
+          <span style={{ color: '#DB4437' }}>o</span>
         </div>
-        <input
-          type="text"
-          value={searchedInput}
-          onChange={(event) => setSearchedInput(event.target.value)}
-        />
+        <SearchInput term={searchedInput} setTerm={setSearchedInput} />
       </div>
       <div className="searched-document-page__body">
         {document.map((value, index) => {
