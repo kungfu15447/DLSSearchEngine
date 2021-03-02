@@ -17,3 +17,7 @@ export const addStatement = async (
 
   return response.data;
 };
+
+export const removeStatement = async (statementId: number) => {
+  await axios.delete(`${route}/${statementId}`);
+};

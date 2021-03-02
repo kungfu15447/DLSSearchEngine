@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SearchStatement } from '../../data/models/searchstatement';
-import { getHistory, addStatement } from '../../data/services/HistoryService';
+import {
+  getHistory,
+  addStatement,
+  removeStatement,
+} from '../../data/services/HistoryService';
 import './search-input.css';
 
 interface IProps {
@@ -46,6 +50,12 @@ const SearchInput: React.FC<IProps> = ({
     });
   };
 
+  const removeSearchStatement = (stId: number) => {
+    removeStatement(stId).then(() => {
+      setTermHistory(termHistory.filter((r) => r.id !== stId));
+    });
+  };
+
   return (
     <div className="search-input-container">
       <input
@@ -53,7 +63,11 @@ const SearchInput: React.FC<IProps> = ({
         type="text"
         value={term}
         onChange={(event) => setTerm(event.target.value)}
-        onClick={() => setShowHistory(!showHistory)}
+        onClick={() =>
+          termHistory.length > 0
+            ? setShowHistory(!showHistory)
+            : setShowHistory(false)
+        }
       />
       {!showHistory && showButtons && (
         <div>
@@ -65,7 +79,7 @@ const SearchInput: React.FC<IProps> = ({
           </button>
         </div>
       )}
-      {showHistory && (
+      {showHistory && termHistory.length > 0 && (
         <div className="search-history-container">
           {termHistory.map((value, index) => {
             return (
@@ -76,7 +90,10 @@ const SearchInput: React.FC<IProps> = ({
                 >
                   {value.statement}
                 </div>
-                <span className="search-history-container-row__remove">
+                <span
+                  className="search-history-container-row__remove"
+                  onClick={() => removeSearchStatement(value.id)}
+                >
                   Remove
                 </span>
               </div>
