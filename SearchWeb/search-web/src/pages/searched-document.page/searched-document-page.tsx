@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { APIDocument } from '../../data/models/document';
 import { GetDocumentsByTerm } from '../../data/services/DocumentService';
 import SearchInput from '../../shared/search-input/search-input';
@@ -9,6 +9,7 @@ const SearchedDocumentPage: React.FC = () => {
   const [document, setDocument] = useState<APIDocument[]>([]);
   const [searchedInput, setSearchedInput] = useState('');
   const { term } = useParams<{ term: string }>();
+  const history = useHistory();
 
   const getDocuments = (term?: string) => {
     let searchTerm = '';
@@ -17,13 +18,10 @@ const SearchedDocumentPage: React.FC = () => {
     } else {
       searchTerm = searchedInput;
     }
-    GetDocumentsByTerm(searchTerm)
-      .then((list) => {
-        setDocument(list);
-      })
-      .catch(() => {
-        setDocument([]);
-      });
+    if (searchTerm.length !== 0) {
+      history.push('/');
+      history.push(`search/${searchTerm}`);
+    }
   };
 
   useEffect(() => {
@@ -31,13 +29,22 @@ const SearchedDocumentPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    getDocuments(term);
+    GetDocumentsByTerm(term)
+      .then((list) => {
+        setDocument(list);
+      })
+      .catch(() => {
+        setDocument([]);
+      });
   }, []);
 
   return (
     <div>
       <div className="searched-document-page__header">
-        <div className="searched-document-page__header-title">
+        <div
+          className="searched-document-page__header-title"
+          onClick={() => history.push('/')}
+        >
           <span style={{ color: '#4285F4' }}>Z</span>
           <span style={{ color: '#F4B400' }}>e</span>
           <span style={{ color: '#0F9D58' }}>r</span>

@@ -59,7 +59,9 @@ const SearchInput: React.FC<IProps> = ({
   return (
     <div className="search-input-container">
       <input
-        className="search-input"
+        className={`search-input ${
+          showHistory ? 'search-input-with-history' : ''
+        }`}
         type="text"
         value={term}
         onChange={(event) => setTerm(event.target.value)}
@@ -79,7 +81,7 @@ const SearchInput: React.FC<IProps> = ({
           </button>
         </div>
       )}
-      {showHistory && termHistory.length > 0 && (
+      {showHistory && (
         <div className="search-history-container">
           {termHistory.map((value, index) => {
             return (
@@ -99,6 +101,14 @@ const SearchInput: React.FC<IProps> = ({
               </div>
             );
           })}
+          <div className="search-history-container__button-container">
+            <button
+              className="search-input__search-button"
+              onClick={() => onSearchDocuments()}
+            >
+              Search
+            </button>
+          </div>
         </div>
       )}
     </div>

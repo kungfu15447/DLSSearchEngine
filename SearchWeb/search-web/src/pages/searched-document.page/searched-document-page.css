@@ -6,8 +6,9 @@
 }
 
 .searched-document-page__header-title {
-  display: inline-block;
   margin-right: 30px;
+  float: left;
+  cursor: pointer;
 }
 
 .searched-document-page__header-title > span {
