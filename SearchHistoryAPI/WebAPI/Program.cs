@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace SearchHistoryAPI
+namespace SearchHistoryAPI.WebAPI
 {
     public class Program
     {

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace SearchHistoryAPI.Controllers
+namespace SearchHistoryAPI.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class HistoryController : ControllerBase
     {
+        
     }
 }
