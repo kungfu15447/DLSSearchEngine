@@ -65,6 +65,20 @@ const SearchedDocumentPage: React.FC = () => {
             </div>
           );
         })}
+        {document.length === 0 && (
+          <div className="searched-document-page__body-no-result">
+            <span>Your search word - </span>
+            <span style={{ fontWeight: 'bold' }}>{term}</span>
+            <span> - did not match any documents</span>
+            <h4 />
+            <span>Recommendations:</span>
+            <ul>
+              <li>Make sure that all words are spelled correctly</li>
+              <li>Try different search words</li>
+              <li>Try more general search words</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

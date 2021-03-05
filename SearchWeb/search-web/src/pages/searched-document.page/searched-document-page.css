@@ -16,6 +16,18 @@
   font-weight: 550;
 }
 
+.searched-document-page__body {
+  float: left;
+  z-index: 0;
+}
+
 .searched-document-page__body-row {
   border-bottom: 1px solid #cccccc;
+}
+
+.searched-document-page__body-no-result {
+  margin-left: 100px;
+  margin-top: 30px;
+  width: 500px;
+  z-index: 0;
 }
