@@ -7,6 +7,7 @@ import './searched-document-page.css';
 
 const SearchedDocumentPage: React.FC = () => {
   const [document, setDocument] = useState<APIDocument[]>([]);
+  const [loading, setLoading] = useState(false);
   const [searchedInput, setSearchedInput] = useState('');
   const { term } = useParams<{ term: string }>();
   const history = useHistory();
@@ -29,12 +30,16 @@ const SearchedDocumentPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     GetDocumentsByTerm(term)
       .then((list) => {
         setDocument(list);
       })
       .catch(() => {
         setDocument([]);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -60,12 +65,18 @@ const SearchedDocumentPage: React.FC = () => {
         {document.map((value, index) => {
           return (
             <div className="searched-document-page__body-row" key={index}>
-              <h6>{value.link}</h6>
-              <h4>{value.title}</h4>
+              <div className="searched-document-page__body-row-header">
+                <div className="searched-document-page__body-row-header-link">
+                  {value.link}
+                </div>
+                <div className="searched-document-page__body-row-header-title">
+                  {value.title}
+                </div>
+              </div>
             </div>
           );
         })}
-        {document.length === 0 && (
+        {document.length === 0 && !loading && (
           <div className="searched-document-page__body-no-result">
             <span>Your search word - </span>
             <span style={{ fontWeight: 'bold' }}>{term}</span>

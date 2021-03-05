@@ -18,16 +18,40 @@
 
 .searched-document-page__body {
   float: left;
+  margin-top: 10px;
+  margin-left: 100px;
   z-index: 0;
 }
 
 .searched-document-page__body-row {
-  border-bottom: 1px solid #cccccc;
+  margin-bottom: 30px;
+}
+
+.searched-document-page__body-row:first-child {
+  margin-top: 25px;
 }
 
 .searched-document-page__body-no-result {
-  margin-left: 100px;
-  margin-top: 30px;
   width: 500px;
+  margin-top: 20px;
   z-index: 0;
+}
+
+.searched-document-page__body-row-header {
+}
+
+.searched-document-page__body-row-header-link {
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.searched-document-page__body-row-header-title {
+  font-size: 20px;
+  color: #1a0dab;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.searched-document-page__body-row-header-title:hover {
+  text-decoration: underline;
 }
