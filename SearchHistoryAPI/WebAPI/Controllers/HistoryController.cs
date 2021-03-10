@@ -1,7 +1,5 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SearchHistoryAPI.Models;
 using SearchHistoryAPI.Services;
 using SearchHistoryAPI.WebAPI.Models;
 
@@ -11,7 +9,8 @@ namespace SearchHistoryAPI.WebAPI.Controllers
     [Route("[controller]")]
     public class HistoryController : ControllerBase
     {
-        private IHistoryService _historyService;
+        private readonly IHistoryService _historyService;
+
         public HistoryController(IHistoryService historyService)
         {
             _historyService = historyService;
@@ -36,10 +35,7 @@ namespace SearchHistoryAPI.WebAPI.Controllers
         {
             var statement = await _historyService.GetStatementByIdAsync(statementId);
 
-            if (statement == null) 
-            {
-                return NotFound();
-            }
+            if (statement == null) return NotFound();
 
             await _historyService.DeleteStatementAsync(statement);
             return Ok();

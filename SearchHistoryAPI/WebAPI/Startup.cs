@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SearchHistoryAPI.Context;
 using SearchHistoryAPI.Services;
@@ -30,24 +23,30 @@ namespace SearchHistoryAPI.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            bool useInMemory = Configuration.GetValue<bool>("ConfigValues:UseInMemory");
+            var useInMemory = Configuration.GetValue<bool>("ConfigValues:UseInMemory");
             if (useInMemory)
             {
                 var sqlite = new SqliteConnection("Data Source = History.db");
                 sqlite.Open();
-                services.AddDbContext<HistoryContext>(options => options.UseSqlite(sqlite));
-            } else 
-            {
-                services.AddDbContext<HistoryContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:HistoryDB"]));
+                services.AddDbContext<HistoryContext>(options =>
+                    SqliteDbContextOptionsBuilderExtensions.UseSqlite(options, sqlite));
             }
+            else
+            {
+                services.AddDbContext<HistoryContext>(options =>
+                    SqlServerDbContextOptionsExtensions.UseSqlServer(options,
+                        Configuration["ConnectionStrings:HistoryDB"]));
+            }
+
             services.AddScoped<IHistoryService, HistoryService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchHistoryAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "SearchHistoryAPI", Version = "v1"});
             });
 
-            services.AddCors(options => options.AddDefaultPolicy(builder => {
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
                 builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
             }));
         }
@@ -77,10 +76,7 @@ namespace SearchHistoryAPI.WebAPI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

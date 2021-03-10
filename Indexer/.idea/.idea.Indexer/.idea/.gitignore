@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.Indexer.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Users\45427\Documents\DLSSearchEngine\Indexer\Indexer\.idea\.idea.Indexer\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
