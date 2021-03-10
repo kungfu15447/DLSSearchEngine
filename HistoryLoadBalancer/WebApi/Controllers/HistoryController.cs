@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HistoryLoadBalancer.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -47,12 +48,23 @@ namespace HistoryLoadBalancer.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddStatementModel asm)
         {
-            return Ok();
+            var stringContent = new StringContent(JsonConvert.SerializeObject(asm), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("history", stringContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var statement = JsonConvert.DeserializeObject<SearchStatement>(content);
+                return Ok(statement);
+            } else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{statementId}")]
         public async Task<IActionResult> Delete(int statementId)
         {
+            
             return Ok();
         }
     }
