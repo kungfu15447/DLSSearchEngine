@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SearchStatement } from '../models/searchstatement';
 
-const route = 'https://localhost:5002/History';
+const route = 'https://localhost:6001/load/history';
 
 export const getHistory = async () => {
   const response = await axios.get<SearchStatement[]>(route);
