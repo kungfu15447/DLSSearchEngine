@@ -20,16 +20,22 @@ namespace HistoryLoadBalancer.WebApi.Controllers
             5006
         };
         private static int currentPort = 0;
+
+        private static object myLock = new object();
         private HttpClient client;
+
         public HistoryController()
         {
-            if (currentPort == ports.Count)
-            {
-                currentPort = 0;
+            lock(myLock) {
+                if (currentPort == ports.Count)
+                {
+                    currentPort = 0;
+                }
+                currentPort++;
             }
+
             client = new HttpClient();
             client.BaseAddress = new Uri($"https://localhost:{ports[currentPort]}/");
-            currentPort++;
         }
 
         [HttpGet]
