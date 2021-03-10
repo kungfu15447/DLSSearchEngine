@@ -27,13 +27,14 @@ namespace HistoryLoadBalancer.WebApi.Controllers
         public HistoryController()
         {
             lock(myLock) {
-                if (currentPort == ports.Count)
+                if (currentPort == ports.Count - 1)
                 {
                     currentPort = 0;
+                }else
+                {
+                    currentPort++;
                 }
-                currentPort++;
             }
-
             client = new HttpClient();
             client.BaseAddress = new Uri($"https://localhost:{ports[currentPort]}/");
         }
