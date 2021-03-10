@@ -11,7 +11,7 @@ namespace SearchHistoryAPI.Services
     public class HistoryService : IHistoryService
     {
         private HistoryContext _ctx;
-        
+
         public HistoryService(HistoryContext ctx)
         {
             _ctx = ctx;
@@ -21,10 +21,11 @@ namespace SearchHistoryAPI.Services
         {
             var searchStatement = await _ctx.SearchStatements.FirstOrDefaultAsync(s => s.Statement == statement);
 
-            if (searchStatement != null) 
+            if (searchStatement != null)
             {
                 searchStatement.SearchedOn = DateTime.Now;
-            } else 
+            }
+            else
             {
                 searchStatement = new SearchStatement
                 {
