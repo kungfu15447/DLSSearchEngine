@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SearchHistoryAPI.Context;
@@ -16,6 +17,7 @@ namespace SearchHistoryAPI.Services
         {
             _ctx = ctx;
         }
+        
 
         public async Task<SearchStatement> AddOrUpdateStatementAsync(string statement)
         {
