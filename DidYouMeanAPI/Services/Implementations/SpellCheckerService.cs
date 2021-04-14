@@ -23,6 +23,12 @@ namespace DidYouMeanAPI.Services.Implementations
             // DataSource null check
             if (_dataSource == null) throw new InvalidOperationException($"{nameof(IDataSource)} in {nameof(ISpellCheckerService)} is null");
 
+            if (await _dataSource.ExistsAsync(s))
+            {
+                Console.WriteLine($"{s} exists in database");
+                return new List<string>();
+            }
+
             // Fetches everything from the data source
             IEnumerable<string> dictionary = await _dataSource.GetAllAsync();
             // Creates a dictionary to store the word and it's distance
@@ -81,6 +87,12 @@ namespace DidYouMeanAPI.Services.Implementations
         {
             // DataSource null check
             if (_dataSource == null) throw new InvalidOperationException($"{nameof(IDataSource)} in {nameof(ISpellCheckerService)} is null");
+
+            if (await _dataSource.ExistsAsync(s))
+            {
+                Console.WriteLine($"{s} exists in database");
+                return new List<string>();
+            }
 
             // Fetches everything from the data source
             IEnumerable<string> dictionary = await _dataSource.GetAllAsync();
