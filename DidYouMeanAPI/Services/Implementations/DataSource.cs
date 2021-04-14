@@ -20,9 +20,10 @@ namespace DidYouMeanAPI.Services.Implementations
             return _ctx.Terms.AnyAsync(t => t.Value == s);
         }
 
-        public Task<IEnumerable<string>> GetAllAsync()
+        public async Task<IEnumerable<string>> GetAllAsync()
         {
-            Task<IEnumerable<string>> list = _ctx.Terms.Select(t => t.Value).ToListAsync();
+            IEnumerable<string> list = await _ctx.Terms.Select(t => t.Value).ToListAsync();
+            return list;
         }
     }
 }

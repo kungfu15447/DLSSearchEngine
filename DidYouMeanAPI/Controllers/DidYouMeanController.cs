@@ -22,14 +22,17 @@ namespace DidYouMeanAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSynonyms([FromQuery] string term)
+        public async Task<IActionResult> GetSynonyms([FromQuery] string term, int nAmount)
         {
-            if (String.IsNullOrEmpty(term))
+            _logger.LogDebug("Poopi, stinky");
+            if (string.IsNullOrEmpty(term))
             {
                 return BadRequest();
             }
 
-            return Ok();
+            var result  = await _service.GetSimilarWordsAsync(term, 1, nAmount);
+            _logger.LogDebug("stinky poo");
+            return Ok(result);
         }
     }
 }
