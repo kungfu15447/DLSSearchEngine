@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DidYouMeanAPI.Context;
+using DidYouMeanAPI.Services.Implementations;
+using DidYouMeanAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +33,12 @@ namespace DidYouMeanAPI
         {
 
             services.AddControllers();
+
+            var sqlite = new SqliteConnection("Data Source = ../SearchEngineAPI/Search.db");
+            sqlite.Open();
+            services.AddDbContext<SearchContext>(options => options.UseSqlite(sqlite));
+            services.AddScoped<IDataSource, DataSource>();
+            services.AddScoped<ISpellCheckerService, SpellCheckerService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DidYouMeanAPI", Version = "v1" });
