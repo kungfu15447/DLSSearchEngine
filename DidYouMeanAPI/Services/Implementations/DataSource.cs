@@ -1,21 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DidYouMeanAPI.Context;
 using DidYouMeanAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DidYouMeanAPI.Services.Implementations
 {
     public class DataSource : IDataSource
     {
-        public DataSource() {}
+        private SearchContext _ctx;
+        public DataSource(SearchContext ctx) 
+        {
+            _ctx = ctx;
+        }
 
         public Task<bool> ExistsAsync(string s)
         {
-            throw new System.NotImplementedException();
+            return _ctx.Terms.AnyAsync(t => t.Value == s);
         }
 
         public Task<IEnumerable<string>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            Task<IEnumerable<string>> list = _ctx.Terms.Select(t => t.Value).ToListAsync();
         }
     }
 }
